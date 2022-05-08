@@ -1,0 +1,112 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.court {
+  display: grid;
+  grid-template-rows: 40px 120px 120px 40px;
+  grid-template-columns: 50px 200px 80px 80px 200px 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1024px;
+  height: 80%;
+  border: solid 1px #fff;
+  justify-content: center;
+  align-content: center;
+}
+
+.court .net {
+  position: relative;
+  border-left: 1px dashed #fff;
+}
+
+.court .net .post {
+  position: absolute;
+  background-color: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.court .post-top {
+  top: -8px;
+  left: -8px;
+}
+
+.court .post-bottom {
+  bottom: -8px;
+  left: -8px;
+}
+
+.court .indicator::before {
+  content: "STARTING POINT";
+  position: absolute;
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.court .indicator.top::before {
+  top: 5px;
+  right: 5px;
+}
+
+.court .indicator.bottom::before {
+  bottom: 5px;
+  left: 5px;
+}
+
+.court > div {
+  border: solid #fff;
+  border-width: 1px 0 0 1px;
+  transition: all 0.5s;
+  background: #349850;
+}
+
+.court .player {
+  cursor: pointer;
+}
+
+.court .serving {
+  background-color: rgb(248 113 113);
+}
+
+.court .receiving {
+  background-color: rgb(217 249 157);
+}
+
+.court .receiving .indicator.top::before {
+  color: #000;
+}
+
+.court > div:nth-child(6),
+.court > div:nth-child(12),
+.court > div:nth-child(16),
+.court > div:nth-child(22) {
+  border-right-width: 1px;
+}
+
+.court > div:nth-last-child(-n + 6) {
+  border-bottom-width: 1px;
+}
+
+.court > div:nth-child(9),
+.court > div:nth-child(10) {
+  grid-row: 2/4;
+}
+
+.court > div:nth-child(9) {
+  grid-column: 3;
+}
+
+.court > div:nth-child(10) {
+  grid-column: 4;
+}
