@@ -1,7 +1,5 @@
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dialog, Transition } from "@headlessui/react";
-import { CheckIcon } from "@heroicons/react/outline";
 
 import {
   serverScoreIncrement,
@@ -29,11 +27,14 @@ const Court = () => {
   }, [dispatch]);
 
   const [teamA, setTeamA] = useState([
-    "Marcus Fernaldi Gideon",
-    "Kevin Sanjaya Sukamuljo",
+    "Team A - Player 1",
+    "Team A - Player 2",
   ]);
 
-  const [teamB, setTeamB] = useState(["Hiroyuki Endo", "Yuta Watanabe"]);
+  const [teamB, setTeamB] = useState([
+    "Team B - Player 1",
+    "Team B - Player 2",
+  ]);
 
   const changePositionA = () => {
     if (serveTeam === 1) {
