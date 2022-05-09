@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CounterState {
   serverScore: number;
@@ -14,18 +14,24 @@ export const counter = createSlice({
   name: "counter",
   initialState,
   reducers: {
-    serverScoreIncrement: (state) => {
+    serverScoreIncrement: (state: CounterState) => {
       state.serverScore += 1;
     },
-    serverScoreDecrement: (state) => {
+    serverScoreDecrement: (state: CounterState) => {
       state.serverScore -= 1;
     },
-    receiverScoreIncrement: (state) => {
+    receiverScoreIncrement: (state: CounterState) => {
       state.receiverScore += 1;
     },
-    receiverScoreDecrement: (state) => {
+    receiverScoreDecrement: (state: CounterState) => {
       state.receiverScore -= 1;
     },
+    serverScoreByAmount: (state: CounterState, action: PayloadAction<number>) => {
+      state.serverScore = action.payload
+    },
+    receiverScoreByAmount: (state: CounterState, action: PayloadAction<number>) => {
+      state.receiverScore = action.payload
+    }
   },
 });
 

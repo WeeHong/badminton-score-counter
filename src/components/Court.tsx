@@ -1,47 +1,77 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Dialog, Transition } from "@headlessui/react";
+import { CheckIcon } from "@heroicons/react/outline";
 
 import {
   serverScoreIncrement,
-  serverScoreDecrement,
   receiverScoreIncrement,
-  receiverScoreDecrement,
 } from "../data/feature/score";
+import {
+  setServeTeam,
+  setServerPosition,
+  setReceiverPosition,
+} from "../data/feature/serve";
 import { RootState } from "../data/store";
 
 const Court = () => {
   const { serverScore, receiverScore } = useSelector(
     (state: RootState) => state.counter
   );
-  const dispatch = useDispatch();
-  const [serveCourt, setServeCourt] = useState(1);
-  const [receiveCourt, setReceiveCourt] = useState(1);
-  const [servers, setServers] = useState([{ name: "A" }, { name: "B" }]);
-  const [receivers, setReceivers] = useState([{ name: "C" }, { name: "D" }]);
+  const { serveTeam, serverPosition, receiverPosition } = useSelector(
+    (state: RootState) => state.serve
+  );
 
-  const setCourt = () => {
-    const totalScore = serverScore + receiverScore;
-    setServeCourt((totalScore ^ 2) % 2);
-    setReceiveCourt((totalScore ^ 2) % 2);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setServeTeam(1));
+  }, [dispatch]);
+
+  const [teamA, setTeamA] = useState([
+    "Marcus Fernaldi Gideon",
+    "Kevin Sanjaya Sukamuljo",
+  ]);
+
+  const [teamB, setTeamB] = useState(["Hiroyuki Endo", "Yuta Watanabe"]);
+
+  const changePositionA = () => {
+    if (serveTeam === 1) {
+      swapTeamA();
+    } else {
+      dispatch(setServeTeam(1));
+    }
+    dispatch(setServerPosition(serverScore + 1));
+    dispatch(serverScoreIncrement());
   };
 
-  const swapServers = () => {
-    if (servers.length > 1) {
-      const temp = servers[0];
-      servers[0] = servers[1];
-      servers[1] = temp;
+  const changePositionB = () => {
+    if (serveTeam === 2) {
+      swapTeamB();
+    } else {
+      dispatch(setServeTeam(2));
+    }
+    dispatch(receiverScoreIncrement());
+    dispatch(setReceiverPosition(receiverScore + 1));
+  };
 
-      setCourt();
+  const swapTeamA = () => {
+    if (teamA.length > 1) {
+      const temp = teamA[0];
+      teamA[0] = teamA[1];
+      teamA[1] = temp;
+
+      setTeamA(teamA);
     }
   };
 
-  const swapReceivers = () => {
-    if (receivers.length > 1) {
-      const temp = receivers[0];
-      receivers[0] = receivers[1];
-      receivers[1] = temp;
+  const swapTeamB = () => {
+    if (teamB.length > 1) {
+      const temp = teamB[0];
+      teamB[0] = teamB[1];
+      teamB[1] = temp;
 
-      setCourt();
+      setTeamB(teamB);
     }
   };
 
@@ -57,14 +87,11 @@ const Court = () => {
       <div></div>
       <div></div>
       <div
-        className={`player ${serveCourt === 0 && "serving"}`}
-        onClick={() => {
-          swapServers();
-          dispatch(serverScoreIncrement());
-        }}
+        className={`player ${serverPosition === 1 ? "serving" : ""}`}
+        onClick={() => changePositionA()}
       >
         <div className="h-full flex justify-center items-center">
-          {servers[0].name}
+          {teamA[0]}
         </div>
       </div>
       <div className="flex justify-center items-center">
@@ -78,38 +105,31 @@ const Court = () => {
         </span>
       </div>
       <div
-        className={`relative player ${receiveCourt === 1 && "receiving"}`}
-        onClick={() => {
-          swapReceivers();
-          dispatch(receiverScoreIncrement());
-        }}
+        className={`relative player ${
+          receiverPosition === 0 ? "receiving" : ""
+        }`}
+        onClick={() => changePositionB()}
       >
         <div className="indicator top h-full flex justify-center items-center">
-          {receivers[0].name}
+          {teamB[0]}
         </div>
       </div>
       <div></div>
       <div></div>
       <div
-        className={`relative player ${serveCourt === 1 && "serving"}`}
-        onClick={() => {
-          swapServers();
-          dispatch(serverScoreIncrement());
-        }}
+        className={`relative player ${serverPosition === 0 ? "serving" : ""}`}
+        onClick={() => changePositionA()}
       >
         <div className="indicator bottom h-full flex justify-center items-center">
-          {servers[1].name}
+          {teamA[1]}
         </div>
       </div>
       <div
-        className={`player ${receiveCourt === 0 && "receiving"}`}
-        onClick={() => {
-          swapReceivers();
-          dispatch(receiverScoreIncrement());
-        }}
+        className={`player ${receiverPosition === 1 ? "receiving" : ""}`}
+        onClick={() => changePositionB()}
       >
         <div className={`h-full flex justify-center items-center`}>
-          {receivers[1].name}
+          {teamB[1]}
         </div>
       </div>
       <div></div>

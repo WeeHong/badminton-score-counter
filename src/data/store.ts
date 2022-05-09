@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReducer from "./feature/score";
+import serveReducer from "./feature/serve";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    serve: serveReducer,
   },
 });
 
